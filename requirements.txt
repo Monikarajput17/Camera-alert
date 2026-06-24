@@ -1,0 +1,8 @@
+# Core dependencies — all pip-installable on Windows, no C++ compiler needed.
+opencv-python>=4.9.0      # includes YuNet (FaceDetectorYN) + SFace (FaceRecognizerSF)
+numpy>=1.24
+pyyaml>=6.0
+
+# Optional: YOLOv8 person detection (catches people whose face isn't visible).
+# Heavier download (pulls in PyTorch). Install separately if you want it:
+#   pip install -r requirements-optional.txt

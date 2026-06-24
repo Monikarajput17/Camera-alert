@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Downloaded model weights
+models/
+*.onnx
+yolov8*.pt
+
+# Generated face database (contains biometric data — keep it local)
+known_faces.npz
+
+# Enrollment photos of real people
+known_faces/
+
+# Alarm output
+alerts/
+
+# Test scratch
+test_assets/
+*.bin
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

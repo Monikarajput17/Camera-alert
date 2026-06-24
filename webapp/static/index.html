@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camera Alert</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🛡️</span>
+      <div>
+        <h1>Camera Alert</h1>
+        <p class="tagline">Unknown-person detection for home cameras</p>
+      </div>
+    </div>
+    <div class="status-pill" id="statusPill">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Connecting…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ── Live view ─────────────────────────────────────────── -->
+    <section class="card video-card">
+      <div class="video-wrap">
+        <img id="videoStream" alt="camera stream" />
+        <div class="video-overlay" id="videoOverlay"></div>
+      </div>
+      <div class="video-controls">
+        <button id="btnStart" class="btn btn-primary">▶ Start</button>
+        <button id="btnStop" class="btn">■ Stop</button>
+        <div class="source-group">
+          <input id="sourceInput" class="input" placeholder="0  ·  rtsp://…  ·  test.mp4" />
+          <button id="btnSource" class="btn">Set source</button>
+        </div>
+      </div>
+      <div class="metrics" id="metrics">
+        <div class="metric"><span class="metric-val" id="mFps">—</span><span class="metric-lbl">FPS</span></div>
+        <div class="metric"><span class="metric-val" id="mFaces">—</span><span class="metric-lbl">Faces</span></div>
+        <div class="metric"><span class="metric-val" id="mPersons">—</span><span class="metric-lbl">Persons</span></div>
+        <div class="metric"><span class="metric-val" id="mKnown">—</span><span class="metric-lbl">Known</span></div>
+        <div class="metric"><span class="metric-val" id="mCooldown">—</span><span class="metric-lbl">Cooldown</span></div>
+      </div>
+    </section>
+
+    <!-- ── Alerts feed ───────────────────────────────────────── -->
+    <section class="card alerts-card">
+      <div class="card-head">
+        <h2>Live alerts</h2>
+        <button id="btnClearAlerts" class="btn btn-ghost btn-sm">Clear</button>
+      </div>
+      <div id="alertList" class="alert-list">
+        <p class="empty">No alerts yet. The feed updates in real time.</p>
+      </div>
+    </section>
+
+    <!-- ── People ────────────────────────────────────────────── -->
+    <section class="card people-card">
+      <div class="card-head"><h2>Known people</h2></div>
+      <div id="peopleList" class="people-list"></div>
+      <form id="enrollForm" class="enroll">
+        <input id="enrollName" class="input" placeholder="Person's name" required />
+        <label class="file-label" id="fileLabel">
+          <input id="enrollFiles" type="file" accept="image/*" multiple required />
+          <span>Choose photos…</span>
+        </label>
+        <button type="submit" class="btn btn-primary" id="btnEnroll">Add person</button>
+      </form>
+      <p class="hint">Tip: 3–5 clear, well-lit photos per person. Faces with no detectable face are skipped.</p>
+    </section>
+
+    <!-- ── Settings ──────────────────────────────────────────── -->
+    <section class="card settings-card">
+      <div class="card-head"><h2>Detection &amp; alarm settings</h2></div>
+
+      <div class="setting">
+        <label>Face match strictness <span class="val" id="matchVal"></span></label>
+        <input type="range" id="matchThreshold" min="0.20" max="0.60" step="0.01" />
+        <small>Higher = stricter; more people read as “unknown”.</small>
+      </div>
+      <div class="setting">
+        <label>Face detect confidence <span class="val" id="detectVal"></span></label>
+        <input type="range" id="detectScore" min="0.50" max="0.99" step="0.01" />
+        <small>Higher = fewer false faces, but may miss hard angles.</small>
+      </div>
+      <div class="setting">
+        <label>Alarm cooldown <span class="val" id="cooldownVal"></span></label>
+        <input type="range" id="cooldownSeconds" min="0" max="120" step="5" />
+        <small>Minimum seconds between alarms (anti-spam).</small>
+      </div>
+
+      <div class="toggles">
+        <label class="switch"><input type="checkbox" id="onUnknownFace" /><span>Alarm on unknown face</span></label>
+        <label class="switch"><input type="checkbox" id="onPersonNoFace" /><span>Alarm on person, no face</span></label>
+      </div>
+      <div class="toggles">
+        <span class="toggles-title">Alarm actions</span>
+        <label class="switch"><input type="checkbox" id="mLog" /><span>Log file</span></label>
+        <label class="switch"><input type="checkbox" id="mSnapshot" /><span>Snapshot</span></label>
+        <label class="switch"><input type="checkbox" id="mSound" /><span>Sound</span></label>
+        <label class="switch"><input type="checkbox" id="mEmail" /><span>Email</span></label>
+      </div>
+    </section>
+  </main>
+
+  <!-- snapshot lightbox -->
+  <div id="lightbox" class="lightbox hidden">
+    <img id="lightboxImg" alt="snapshot" />
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

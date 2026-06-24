@@ -1,0 +1,10 @@
+# Normalize line endings: LF in the repo, native on checkout.
+* text=auto
+
+# Treat these as binary (no line-ending conversion).
+*.onnx binary
+*.pt binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.npz binary

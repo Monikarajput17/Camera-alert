@@ -1,0 +1,59 @@
+# ── Camera Alert configuration ───────────────────────────────────────────────
+# Edit this file to point at your camera and choose how alarms fire.
+
+camera:
+  # Source can be:
+  #   0, 1, ...                      -> local USB/built-in webcam index
+  #   "rtsp://user:pass@ip:554/..."  -> IP / security camera stream
+  #   "test.mp4" / "sample.jpg"      -> a video or image file (for testing)
+  source: 0
+  width: 1280          # requested capture width  (null = camera default)
+  height: 720          # requested capture height (null = camera default)
+  reconnect: true      # auto-reopen the stream if it drops (useful for RTSP)
+  process_every_n: 1   # run detection on every Nth frame (raise to save CPU)
+  rtsp_transport: tcp  # "tcp" = reliable (recommended) · "udp" = lower latency
+
+faces:
+  detect_score: 0.85   # YuNet confidence to count something as a face (0–1)
+  match_threshold: 0.36  # SFace cosine similarity to call a face "known"
+                         # higher = stricter (fewer false matches, more "unknown")
+
+person_detection:
+  # Optional YOLOv8 stage. Catches a person even when no face is visible
+  # (back turned, masked, far away). Requires requirements-optional.txt.
+  enabled: false
+  model: yolov8n.pt    # auto-downloads on first use
+  conf: 0.40           # detection confidence threshold
+
+alarm:
+  cooldown_seconds: 30   # minimum gap between alarms (prevents spam)
+  # What counts as an alert:
+  on_unknown_face: true  # an unrecognized face is seen
+  on_person_no_face: false  # a person is detected but no face at all
+                            # (only meaningful if person_detection.enabled)
+
+  methods:
+    log:
+      enabled: true
+      file: alerts/alerts.log
+
+    snapshot:
+      enabled: true
+      dir: alerts            # saves a JPG of the frame that triggered the alarm
+
+    sound:
+      enabled: true          # Windows beep; harmless no-op on other OSes
+
+    email:
+      enabled: false         # set true and fill in to get email alerts
+      smtp_host: smtp.gmail.com
+      smtp_port: 587
+      username: you@example.com
+      password: ""           # use an app password, not your real password
+      to: you@example.com
+      attach_snapshot: true
+
+paths:
+  models_dir: models
+  known_faces_dir: known_faces   # put photos here: known_faces/<Name>/*.jpg
+  encodings_file: known_faces.npz
