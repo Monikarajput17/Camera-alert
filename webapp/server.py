@@ -49,6 +49,8 @@ service: EngineService | None = None
 async def lifespan(app: FastAPI):
     global service
     service = EngineService(CONFIG_PATH)
+    if service.cfg.get("camera.auto_start", False):
+        service.start()  # appliance mode: begin detecting on launch
     try:
         yield
     finally:

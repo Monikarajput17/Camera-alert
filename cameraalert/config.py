@@ -16,6 +16,7 @@ DEFAULTS = {
         "reconnect": True,
         "process_every_n": 1,
         "rtsp_transport": "tcp",
+        "auto_start": False,
     },
     "faces": {
         "detect_score": 0.85,

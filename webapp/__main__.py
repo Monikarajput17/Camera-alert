@@ -1,8 +1,19 @@
 """Entry point: `python -m webapp` launches the dashboard server."""
 
 import argparse
+import os
+import sys
 
-import uvicorn
+# When launched with pythonw.exe (used for hidden auto-start at logon) there is
+# no console, so sys.stdout / sys.stderr are None. uvicorn's logger writes to
+# stderr and would crash on startup. Redirect both to a log file first.
+if sys.stdout is None or sys.stderr is None:
+    _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    _log = open(os.path.join(_root, "dashboard.log"), "a", buffering=1, encoding="utf-8")
+    sys.stdout = _log
+    sys.stderr = _log
+
+import uvicorn  # noqa: E402  (imported after the stdout fix above)
 
 
 def main():

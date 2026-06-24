@@ -12,6 +12,8 @@ camera:
   reconnect: true      # auto-reopen the stream if it drops (useful for RTSP)
   process_every_n: 1   # run detection on every Nth frame (raise to save CPU)
   rtsp_transport: tcp  # "tcp" = reliable (recommended) · "udp" = lower latency
+  auto_start: true     # begin detecting as soon as the server launches
+                       # (set false if you'd rather press Start in the dashboard)
 
 faces:
   detect_score: 0.85   # YuNet confidence to count something as a face (0–1)

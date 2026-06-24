@@ -22,6 +22,9 @@ alerts/
 test_assets/
 *.bin
 
+# Runtime log (created when launched headless via pythonw)
+dashboard.log
+
 # OS / editor
 .DS_Store
 Thumbs.db
