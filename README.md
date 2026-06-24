@@ -98,6 +98,28 @@ Press `q` in the preview window, or `Ctrl+C` in the terminal, to stop.
 python -m tests.test_engine      # downloads 2 sample faces, checks the engine
 ```
 
+## Run it 24/7 (auto-start at logon, Windows)
+
+This app runs on a machine **at home** (it needs to see your camera) — it is not
+a cloud/Vercel app. To have it launch automatically and run in the background:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy\install-autostart.ps1
+```
+
+This drops a hidden shortcut in your Startup folder (no admin needed) that runs
+the dashboard with `pythonw.exe` (no console window) at every logon, serving
+http://localhost:8000. With `camera.auto_start: true` in `config.yaml`, it also
+begins detecting on its own. Remove it any time with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy\uninstall-autostart.ps1
+```
+
+To **view the dashboard from your phone or away from home**, keep it running at
+home and add a secure tunnel (e.g. [Tailscale](https://tailscale.com) or
+Cloudflare Tunnel) rather than exposing port 8000 to the internet.
+
 ## Configuration
 
 Everything is in [`config.yaml`](config.yaml):
@@ -137,6 +159,9 @@ webapp/                # web dashboard
   static/              # index.html · style.css · app.js (no build step)
 tests/
   test_engine.py       # detect / recognize / round-trip smoke test
+deploy/
+  install-autostart.ps1   # auto-start at logon (Windows, no admin)
+  uninstall-autostart.ps1
 ```
 
 ## Notes & tuning
