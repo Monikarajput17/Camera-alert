@@ -1,0 +1,41 @@
+# Config for the PUBLIC CLOUD DEMO (used by the Docker image / Render).
+# A cloud server can't see your home camera, so the "feed" is a bundled looping
+# video of public-domain portraits. One person is pre-enrolled as known; the
+# rest trip "unknown person" alerts — so visitors see the whole pipeline work.
+
+camera:
+  source: assets/demo_feed.mp4   # looping sample feed instead of a real camera
+  width: null
+  height: null
+  reconnect: true                # loops the video when it ends
+  process_every_n: 2             # ease CPU on small cloud instances
+  rtsp_transport: tcp
+  auto_start: true               # start detecting immediately on deploy
+
+faces:
+  detect_score: 0.70             # portraits detect reliably at this scale
+  match_threshold: 0.36
+
+person_detection:
+  enabled: false
+
+alarm:
+  cooldown_seconds: 8            # short, so alerts are visible in the demo
+  on_unknown_face: true
+  on_person_no_face: false
+  methods:
+    log:
+      enabled: true
+      file: alerts/alerts.log
+    snapshot:
+      enabled: true
+      dir: alerts
+    sound:
+      enabled: false             # no audio device on a server
+    email:
+      enabled: false
+
+paths:
+  models_dir: models
+  known_faces_dir: known_faces
+  encodings_file: assets/demo_known.npz   # pre-enrolled "Alex (demo)"

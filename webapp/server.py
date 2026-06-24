@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import queue
 import shutil
 import time
@@ -38,7 +39,8 @@ from fastapi.staticfiles import StaticFiles
 from cameraalert.faces import FaceEngine
 from cameraalert.service import EngineService
 
-CONFIG_PATH = "config.yaml"
+# Which config to load — overridable so the cloud demo can use config.demo.yaml.
+CONFIG_PATH = os.environ.get("CAMERA_ALERT_CONFIG", "config.yaml")
 STATIC_DIR = Path(__file__).parent / "static"
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 

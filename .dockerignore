@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+known_faces/
+known_faces.npz
+alerts/
+test_assets/
+dashboard.log
+*.bin
+.claude/

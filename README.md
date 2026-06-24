@@ -120,6 +120,26 @@ To **view the dashboard from your phone or away from home**, keep it running at
 home and add a secure tunnel (e.g. [Tailscale](https://tailscale.com) or
 Cloudflare Tunnel) rather than exposing port 8000 to the internet.
 
+## Public cloud demo (Render / Railway / Fly.io)
+
+A cloud server can't see your home camera, so this app is **not** a Vercel-style
+app. But you can host a **public demo** that runs the full pipeline on a bundled
+sample feed (public-domain portraits — one pre-enrolled as "known", the rest
+trip "unknown person" alerts). It's containerized via the [`Dockerfile`](Dockerfile)
+and uses [`config.demo.yaml`](config.demo.yaml).
+
+**Deploy on Render (one-click blueprint):**
+1. Push this repo to GitHub (already done).
+2. Go to [render.com](https://render.com) → **New +** → **Blueprint** → pick this repo.
+   Render reads [`render.yaml`](render.yaml) and builds the Docker image.
+3. Open the resulting `https://camera-alert-demo.onrender.com` URL.
+
+> Free tier note: small CPU and the service sleeps after inactivity (first hit is
+> slow). It's a demo, not your real camera. Vercel is **not** supported — it's
+> serverless and can't run the always-on detection loop or reach a camera.
+
+Regenerate the demo feed any time with: `python -m tools.make_demo_feed`.
+
 ## Configuration
 
 Everything is in [`config.yaml`](config.yaml):

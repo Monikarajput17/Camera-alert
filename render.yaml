@@ -1,0 +1,13 @@
+# Render Blueprint — deploys the public demo as a Docker web service.
+# Use: push to GitHub, then in Render: New + > Blueprint > pick this repo.
+services:
+  - type: web
+    name: camera-alert-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/status
+    autoDeploy: true
+    envVars:
+      - key: CAMERA_ALERT_CONFIG
+        value: config.demo.yaml
